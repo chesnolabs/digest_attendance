@@ -49,7 +49,6 @@ att_period %>%
 
 # відсутні на всіх голосуваннях
 
-
 totally_absent <- att_period %>% 
   filter(absent == total) %>% 
   arrange(by = faction)
@@ -128,7 +127,7 @@ g <- att_for_plot %>%
     guide = guide_legend(reverse = TRUE)) +
   scale_y_continuous(labels = scales::percent) +
   theme_minimal() +
-  ggtitle("УЧАСТЬ НАРОДНИХ ДЕПУТАТІВ У ГОЛОСУВАННЯХ, ЧЕРВЕНЬ 2018") +
+  ggtitle("УЧАСТЬ НАРОДНИХ ДЕПУТАТІВ У ГОЛОСУВАННЯХ, ЛИПЕНЬ 2018") + # скоригувати назву!
   theme(text = element_text(family = "PF DinText Pro"),
     axis.title.x = element_blank(),
     axis.title.y = element_blank(),
