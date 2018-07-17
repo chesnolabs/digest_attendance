@@ -10,10 +10,13 @@ library(forcats)
 # внизу і Ctrl+Alt+B). Тепер у нас працюватимуть кастомні функції
 # для аналізу участі в голосуваннях
 
-# Спершу копіюємо вручну в ексель-файл табличку за відповідний період
+# Копіюємо вручну в ексель-файл табличку за відповідний період
 # звідси: http://w1.c1.rada.gov.ua/pls/radan_gs09/ns_el_h_stat
 # Зчитуємо її та дані депутатів і фракцій за допомогою кастомних функцій
 # з attendance_functions.R
+
+month <- 7 # вказати місяць і рік дайджесту
+year <- 2018
 
 attendance <- get_attendance("data/attendance.xlsx")
 
@@ -94,22 +97,24 @@ summary_gender <- att_period %>%
                                   sum(total, na.rm = T)*100, 1),
             prop_didnotvote = round(sum(didnotvote, na.rm = T)/
                                       sum(total, na.rm = T)*100, 1))
+summary_gender$gender <- c("m", "f")
 
 # запис у файл
 
-month <- "1807"
+dir.create("output")
+month_to_write <- paste0(str_sub(year, 3), str_pad(month, 2, side = "left", pad = "0"))
 
-write.xlsx(as.data.frame(summary_factions), file=paste0("output/attendance_summary_", month, ".xlsx"),
+write.xlsx(as.data.frame(summary_factions), file=paste0("output/attendance_summary_", month_to_write, ".xlsx"),
            sheetName="За фракціями", row.names=FALSE)
-write.xlsx(as.data.frame(totally_absent_short), file=paste0("output/attendance_summary_", month, ".xlsx"),
+write.xlsx(as.data.frame(totally_absent_short), file=paste0("output/attendance_summary_", month_to_write, ".xlsx"),
            sheetName="Особи", append = TRUE, row.names=FALSE)
-write.xlsx(as.data.frame(absence_summary), file=paste0("output/attendance_summary_", month, ".xlsx"),
+write.xlsx(as.data.frame(absence_summary), file=paste0("output/attendance_summary_", month_to_write, ".xlsx"),
            sheetName="Топ прогулів", append = TRUE, row.names=FALSE)
-write.xlsx(as.data.frame(no_vote_summary), file=paste0("output/attendance_summary_", month, ".xlsx"),
+write.xlsx(as.data.frame(no_vote_summary), file=paste0("output/attendance_summary_", month_to_write, ".xlsx"),
            sheetName="Топ неучасті в голосуваннях", append = TRUE, row.names=FALSE)
-write.xlsx(as.data.frame(summary_major), file=paste0("output/attendance_summary_", month, ".xlsx"),
+write.xlsx(as.data.frame(summary_major), file=paste0("output/attendance_summary_", month_to_write, ".xlsx"),
            sheetName="Мажоритарники", append = TRUE, row.names=FALSE)
-write.xlsx(as.data.frame(summary_gender), file=paste0("output/attendance_summary_", month, ".xlsx"),
+write.xlsx(as.data.frame(summary_gender), file=paste0("output/attendance_summary_", month_to_write, ".xlsx"),
            sheetName="За статтю", append = TRUE, row.names=FALSE)
 
 # Графік участі за фракціями
